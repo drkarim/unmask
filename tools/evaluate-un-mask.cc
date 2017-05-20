@@ -5,7 +5,7 @@
 
 using namespace mirtk;
 
-void UnMask(GreyImage* img1, GreyImage* img2, char* out_img_fn) {
+void UnMask(RealImage* img1, GreyImage* img2, char* out_img_fn) {
 	
 	
 	for (int i=0;i<img1->GetX();i++)
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	int optind;
 	bool foundArgs=false;
 			
-	GreyImage img1; 
+	GreyImage img1, img2; 
 	char* input_f1="", *input_f2="", *output_f="", *output_txt="";
 
 	if (argc >= 1) 
@@ -46,13 +46,13 @@ int main(int argc, char **argv)
 			
 			if (sw == "-i1") {
 				optind++;
-				input_f1 = argv[optind]; 
+				input_f1 = argv[optind]; 	// grey-level
 				foundArgs = true;	
 			}
 			
 			if (sw == "-i2") {
 				optind++;
-				input_f2= argv[optind]; 
+				input_f2= argv[optind]; 		// mask 
 				foundArgs = true;	
 			}
 			
@@ -78,10 +78,10 @@ int main(int argc, char **argv)
 		//GreyImage img2(input_f2); 
 
 		UniquePtr<BaseImage> img1(BaseImage::New(input_f1));
-		UniquePtr<BaseImage> img2(BaseImage::New(input_f2));
+		UniquePtr<BaseImage> img2(BaseImage::New(input_f2));		// mask
 		
 		
-		UnMask(new GenericImage<short>(*img1), new GenericImage<short>(*img2), output_f);
+		UnMask(new RealImage(*img1), new GenericImage<short>(*img2), output_f);
 		
 	}
 
